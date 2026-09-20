@@ -2,7 +2,9 @@
 
 ## Project Description
 
-This project demonstrates three creational design patterns using a burger system:
+This project demonstrates creational design patterns using a burger ordering system.
+
+The project includes three design patterns:
 
 - Builder
 - Factory Method
@@ -10,64 +12,116 @@ This project demonstrates three creational design patterns using a burger system
 
 The project is implemented in Java using JDK 17.
 
----
+## Project Structure
 
-# 1. Builder Pattern
+```text
+src/
+├── burgerbuilder/
+│   ├── AbstractBurgerBuilder.java
+│   ├── Burger.java
+│   ├── BurgerBuilder.java
+│   ├── BurgerDirector.java
+│   ├── ChickenBurgerBuilder.java
+│   └── SmashBurgerBuilder.java
+│
+├── factorymethod/
+│   ├── BurgerFactory.java
+│   ├── BurgerProduct.java
+│   ├── ChickenBurger.java
+│   ├── ChickenBurgerFactory.java
+│   ├── FactoryMethodDemo.java
+│   ├── SmashBurger.java
+│   └── SmashBurgerFactory.java
+│
+└── abstractfactory/
+    ├── Bun.java
+    ├── Sauce.java
+    ├── BriocheBun.java
+    ├── SesameBun.java
+    ├── BBQSauce.java
+    ├── GarlicSauce.java
+    ├── BurgerIngredientFactory.java
+    ├── BeefBurgerIngredientFactory.java
+    ├── ChickenBurgerIngredientFactory.java
+    ├── BurgerApplication.java
+    └── AbstractFactoryDemo.java
 
-The Builder Pattern is used to construct a burger step by step from different components.
+Builder Pattern
+
+The Builder Pattern is used to construct a burger step by step.
 
 The burger can contain:
 
-- bun
-- patty
-- cheese
-- sauce
-- vegetables
-- extras
+Bun
+Patty
+Cheese
+Sauce
+Vegetables
+Extras
 
-## Builder Components
+The main Builder classes are:
 
-- `Burger` - the final product.
-- `BurgerBuilder` - interface that defines the burger construction steps.
-- `AbstractBurgerBuilder` - contains common construction logic and validation.
-- `SmashBurgerBuilder` - creates a smash burger.
-- `ChickenBurgerBuilder` - creates a chicken burger.
-- `BurgerDirector` - provides predefined burger configurations.
-- `Main` - demonstrates how the Builder Pattern works.
+Burger
+BurgerBuilder
+AbstractBurgerBuilder
+SmashBurgerBuilder
+ChickenBurgerBuilder
+BurgerDirector
+Factory Method Pattern
 
-## Burger Representations
+The Factory Method Pattern is used to create different burger products.
 
-### Smash Burger
+The main classes are:
 
-- Brioche bun
-- Double beef patty
-- Pepper Jack cheese
-- Spicy Mayo
-- Pickles
-- Jalapeno
-- Crispy Bacon
+BurgerProduct
+SmashBurger
+ChickenBurger
+BurgerFactory
+SmashBurgerFactory
+ChickenBurgerFactory
 
-### Chicken Burger
+FactoryMethodDemo demonstrates how the pattern works.
 
-- Sesame bun
-- Grilled chicken
-- Swiss cheese
-- Garlic Mayo
-- Lettuce
-- Tomato
-- Crispy Onions
+Abstract Factory Pattern
 
-## Method Chaining
+The Abstract Factory Pattern is used to create families of related burger ingredients.
 
-The Builder provides a fluent API, so burger components can be configured step by step:
+The main products are:
 
-```java
-Burger customBurger = new SmashBurgerBuilder()
-        .setBun("Brioche")
-        .setPatty("Double Beef")
-        .setCheese("Pepper Jack")
-        .setSauce("Spicy Mayo")
-        .addVegetable("Pickles")
-        .addVegetable("Jalapeno")
-        .addExtra("Crispy Bacon")
-        .build();
+Bun
+Sauce
+
+Concrete products include:
+
+BriocheBun
+SesameBun
+BBQSauce
+GarlicSauce
+
+The factories are:
+
+BurgerIngredientFactory
+BeefBurgerIngredientFactory
+ChickenBurgerIngredientFactory
+
+AbstractFactoryDemo demonstrates how the pattern works.
+
+Technologies
+Java
+JDK 17
+IntelliJ IDEA
+Git
+GitHub
+How to Run
+
+Run Main to test the Builder Pattern.
+
+Run FactoryMethodDemo to test the Factory Method Pattern.
+
+Run AbstractFactoryDemo to test the Abstract Factory Pattern.
+
+Project Goal
+
+The main goal of the project is to demonstrate how creational design patterns can be applied to a burger ordering system and how they separate object creation from the main application logic.
+
+
