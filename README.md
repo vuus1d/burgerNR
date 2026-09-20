@@ -1,20 +1,39 @@
-# Burger Builder
+# Burger Design Patterns
 
 ## Project Description
 
-This project demonstrates the Builder Design Pattern using a burger as a complex product.
+This project demonstrates three creational design patterns using a burger system:
 
-The burger is built step by step from different components such as bun, patty, cheese, sauce, vegetables and extras.
+- Builder
+- Factory Method
+- Abstract Factory
 
-## Project Structure
+The project is implemented in Java using JDK 17.
+
+---
+
+# 1. Builder Pattern
+
+The Builder Pattern is used to construct a burger step by step from different components.
+
+The burger can contain:
+
+- bun
+- patty
+- cheese
+- sauce
+- vegetables
+- extras
+
+## Builder Components
 
 - `Burger` - the final product.
 - `BurgerBuilder` - interface that defines the burger construction steps.
 - `AbstractBurgerBuilder` - contains common construction logic and validation.
-- `SmashBurgerBuilder` - creates a spicy smash burger.
+- `SmashBurgerBuilder` - creates a smash burger.
 - `ChickenBurgerBuilder` - creates a chicken burger.
 - `BurgerDirector` - provides predefined burger configurations.
-- `Main` - demonstrates how the builders work.
+- `Main` - demonstrates how the Builder Pattern works.
 
 ## Burger Representations
 
@@ -22,21 +41,21 @@ The burger is built step by step from different components such as bun, patty, c
 
 - Brioche bun
 - Double beef patty
-- Cheddar cheese
-- Smoky BBQ sauce
+- Pepper Jack cheese
+- Spicy Mayo
 - Pickles
-- Red onion
-- Crispy bacon
+- Jalapeno
+- Crispy Bacon
 
 ### Chicken Burger
 
 - Sesame bun
 - Grilled chicken
 - Swiss cheese
-- Garlic mayo
+- Garlic Mayo
 - Lettuce
 - Tomato
-- Crispy onions
+- Crispy Onions
 
 ## Method Chaining
 
