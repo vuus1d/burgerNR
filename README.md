@@ -4,12 +4,13 @@
 
 This project demonstrates creational and structural design patterns using a burger ordering system.
 
-The project includes four design patterns:
+The project includes five design patterns:
 
 - Builder (creational)
 - Factory Method (creational)
 - Abstract Factory (creational)
 - Bridge (structural)
+- Facade (structural)
 
 The project is implemented in Java using JDK 17.
 
@@ -47,18 +48,35 @@ src/
 │   ├── BurgerApplication.java
 │   └── AbstractFactoryDemo.java
 │
-└── bridge/
-    ├── CookingMethod.java
-    ├── GrillCooking.java
-    ├── DeepFryerCooking.java
-    ├── AirFryerCooking.java
-    ├── BurgerRecipe.java
-    ├── SmashBurgerRecipe.java
-    ├── ChickenBurgerRecipe.java
-    └── BridgeDemo.java
+├── bridge/
+│   ├── CookingMethod.java
+│   ├── GrillCooking.java
+│   ├── DeepFryerCooking.java
+│   ├── AirFryerCooking.java
+│   ├── BurgerRecipe.java
+│   ├── SmashBurgerRecipe.java
+│   ├── ChickenBurgerRecipe.java
+│   └── BridgeDemo.java
+│
+└── facade/
+    ├── BurgerOrderFacade.java
+    ├── OrderFailedException.java
+    ├── FacadeDemo.java
+    ├── AdvancedClientDemo.java
+    ├── model/        Money, Ingredient, BurgerType, OrderRequest, OrderConfirmation, DeliveryStatus, FailureReason
+    └── subsystem/    InventoryService, PaymentGateway, SimulatedPaymentGateway, KitchenStation,
+                      PackagingService, DeliveryDispatcher, SubsystemException and its subclasses, value types
+
+test/
+├── boundaries/       learning tests for BigDecimal, Clock and Map/List
+└── facade/           BurgerOrderFacadeTest, test language (OrderRequests, OrderAssertions), fakes
+    ├── model/
+    └── subsystem/    one test class per subsystem class
 
 docs/
 └── bridge-uml.png
+
+pom.xml               Maven build: JDK 17, JUnit 5
 ```
 
 Builder Pattern
@@ -160,6 +178,25 @@ UML diagram: [docs/bridge-uml.png](docs/bridge-uml.png)
 
 BridgeDemo demonstrates how the pattern works.
 
+## Facade Pattern
+
+The Facade Pattern gives one simple entry point to a complex subsystem. Placing a burger order needs five collaborating classes called in the right order: reserve ingredients, charge the payment, cook, pack and schedule delivery. If a later step fails, the earlier ones must be undone (refund, release the ingredients).
+
+`BurgerOrderFacade` hides all of this behind two methods:
+
+- `placeOrder(OrderRequest)` returns an `OrderConfirmation` or throws a single `OrderFailedException` with a `FailureReason`
+- `trackOrder(orderId)` returns a `DeliveryStatus` (`UNKNOWN` for an unknown order)
+
+| Role | Class |
+|------|-------|
+| Facade | BurgerOrderFacade |
+| Subsystem classes | InventoryService, PaymentGateway / SimulatedPaymentGateway, KitchenStation, PackagingService, DeliveryDispatcher |
+| Client | FacadeDemo |
+
+The facade hides the order of the steps, the rollback and the subsystem exceptions. No subsystem type appears in its public methods. The subsystem classes do not know the facade exists and stay public: `AdvancedClientDemo` deliberately bypasses the facade and orchestrates them by hand, including the manual rollback.
+
+The tests use JUnit 5 and are run with Maven. In IntelliJ IDEA, right-click `pom.xml` and choose "Add as Maven Project" so that `test/` is recognised as a test folder.
+
 Technologies
 Java
 JDK 17
@@ -175,6 +212,10 @@ Run FactoryMethodDemo to test the Factory Method Pattern.
 Run AbstractFactoryDemo to test the Abstract Factory Pattern.
 
 Run bridge.BridgeDemo to test the Bridge Pattern.
+
+Run facade.FacadeDemo to test the Facade Pattern, and facade.AdvancedClientDemo to see the same subsystem used without the facade.
+
+Run the unit tests with `mvn test`, or from IntelliJ IDEA after adding `pom.xml` as a Maven project.
 
 Project Goal
 
