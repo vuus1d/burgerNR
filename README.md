@@ -2,15 +2,16 @@
 
 ## Project Description
 
-This project demonstrates creational and structural design patterns using a burger ordering system.
+This project demonstrates creational, structural and behavioral design patterns using a burger ordering system.
 
-The project includes five design patterns:
+The project includes six design patterns:
 
 - Builder (creational)
 - Factory Method (creational)
 - Abstract Factory (creational)
 - Bridge (structural)
 - Facade (structural)
+- Strategy (behavioral)
 
 The project is implemented in Java using JDK 17.
 
@@ -58,23 +59,34 @@ src/
 │   ├── ChickenBurgerRecipe.java
 │   └── BridgeDemo.java
 │
-└── facade/
-    ├── BurgerOrderFacade.java
-    ├── OrderFailedException.java
-    ├── FacadeDemo.java
-    ├── AdvancedClientDemo.java
-    ├── model/        Money, Ingredient, BurgerType, OrderRequest, OrderConfirmation, DeliveryStatus, FailureReason
-    └── subsystem/    InventoryService, PaymentGateway, SimulatedPaymentGateway, KitchenStation,
-                      PackagingService, DeliveryDispatcher, SubsystemException and its subclasses, value types
+├── facade/
+│   ├── BurgerOrderFacade.java
+│   ├── OrderFailedException.java
+│   ├── FacadeDemo.java
+│   ├── AdvancedClientDemo.java
+│   ├── model/        Money, Ingredient, BurgerType, OrderRequest, OrderConfirmation, DeliveryStatus, FailureReason
+│   └── subsystem/    InventoryService, PaymentGateway, SimulatedPaymentGateway, KitchenStation,
+│                     PackagingService, DeliveryDispatcher, SubsystemException and its subclasses, value types
+│
+└── strategy/
+    ├── DiscountStrategy.java
+    ├── NoDiscount.java
+    ├── StudentDiscount.java
+    ├── HappyHourDiscount.java
+    ├── ComboDiscount.java
+    ├── BurgerCheckout.java
+    └── StrategyDemo.java
 
 test/
 ├── boundaries/       learning tests for BigDecimal, Clock and Map/List
-└── facade/           BurgerOrderFacadeTest, test language (OrderRequests, OrderAssertions), fakes
-    ├── model/
-    └── subsystem/    one test class per subsystem class
+├── facade/           BurgerOrderFacadeTest, test language (OrderRequests, OrderAssertions), fakes
+│   ├── model/
+│   └── subsystem/    one test class per subsystem class
+└── strategy/         one test class per discount strategy, BurgerCheckoutTest
 
 docs/
-└── bridge-uml.png
+├── bridge-uml.png
+└── strategy-report.md
 
 pom.xml               Maven build: JDK 17, JUnit 5
 ```
@@ -195,6 +207,33 @@ The Facade Pattern gives one simple entry point to a complex subsystem. Placing 
 
 The facade hides the order of the steps, the rollback and the subsystem exceptions. No subsystem type appears in its public methods. The subsystem classes do not know the facade exists and stay public: `AdvancedClientDemo` deliberately bypasses the facade and orchestrates them by hand, including the manual rollback.
 
+## Strategy Pattern
+
+The Strategy Pattern defines a family of algorithms, puts each one in its own class and makes them interchangeable. Here the algorithms are discounts on a burger order.
+
+- DiscountStrategy — interface with `applyDiscount(priceInTenge)` and `getName()`
+- NoDiscount — the price does not change
+- StudentDiscount — 10% off
+- HappyHourDiscount — 20% off
+- ComboDiscount — 500 tenge off, but the price never goes below 0
+
+| Role | Class |
+|------|-------|
+| Strategy | DiscountStrategy |
+| Concrete Strategy | NoDiscount, StudentDiscount, HappyHourDiscount, ComboDiscount |
+| Context | BurgerCheckout |
+| Client | StrategyDemo |
+
+`BurgerCheckout` receives a `DiscountStrategy` through its constructor and simply delegates `calculateTotal(...)` to it. It has no `if`/`switch` on the discount type and does not know any concrete strategy class.
+
+The strategy of the same checkout can be switched at runtime with `setDiscountStrategy(...)`.
+
+To add a new discount, create one new class that implements `DiscountStrategy` and pass it to the checkout. The interface, `BurgerCheckout` and the other strategies do not change. ComboDiscount was added this way.
+
+Report with the UML diagram: [docs/strategy-report.md](docs/strategy-report.md)
+
+StrategyDemo demonstrates how the pattern works.
+
 The tests use JUnit 5 and are run with Maven. In IntelliJ IDEA, right-click `pom.xml` and choose "Add as Maven Project" so that `test/` is recognised as a test folder.
 
 Technologies
@@ -214,6 +253,8 @@ Run AbstractFactoryDemo to test the Abstract Factory Pattern.
 Run bridge.BridgeDemo to test the Bridge Pattern.
 
 Run facade.FacadeDemo to test the Facade Pattern, and facade.AdvancedClientDemo to see the same subsystem used without the facade.
+
+Run strategy.StrategyDemo to test the Strategy Pattern.
 
 Run the unit tests with `mvn test`, or from IntelliJ IDEA after adding `pom.xml` as a Maven project.
 
